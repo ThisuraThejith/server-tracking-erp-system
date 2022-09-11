@@ -1,0 +1,10 @@
+# Code Editor Ignores
+.idea/
+
+# Server Ignores
+server/var/
+server/vendor/
+server/.env
+
+# Client Ignores
+client/node_modules/
