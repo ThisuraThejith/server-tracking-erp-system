@@ -1,0 +1,54 @@
+version: "3.4"
+
+services:
+  erp_client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 4200:4200
+    volumes:
+      - ./client:/client
+      - /client/node_modules/
+    container_name: erp_client
+
+  erp_php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    ports:
+      - 9000:9000
+    volumes:
+      - ./server/:/server
+    container_name: erp_php
+
+  erp_nginx:
+    image: nginx:alpine
+    ports:
+      - 8080:80
+    volumes:
+      - ./server/:/server
+      - ./nginx/site.conf:/etc/nginx/conf.d/default.conf
+    container_name: erp_nginx
+    links:
+      - erp_php
+
+  erp_mysql:
+    image: mysql:8.0.24
+    ports:
+      - 3306:3306
+    volumes:
+      - erp-mysql:/var/lib/mysql
+    container_name: erp_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: erp_mysql
+
+  erp_adminer:
+    image: adminer
+    ports:
+      - 9001:8080
+    container_name: erp_adminer
+
+volumes:
+  erp-mysql:
