@@ -5,6 +5,8 @@
 server/var/
 server/vendor/
 server/.env
+server/phpunit.xml
+server/.phpunit.result.cache
 
 # Client Ignores
 client/node_modules/
