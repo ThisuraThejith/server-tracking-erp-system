@@ -24,8 +24,10 @@ class Ram
     #[ORM\OneToMany(mappedBy: 'ram', targetEntity: ServerRam::class)]
     private Collection $serverRams;
 
-    public function __construct()
+    public function __construct(string  $type, int $size)
     {
+        $this->type = $type;
+        $this->size = $size;
         $this->serverRams = new ArrayCollection();
     }
 
@@ -86,5 +88,15 @@ class Ram
         }
 
         return $this;
+    }
+
+    public function getServers()
+    {
+        return array_map(
+            function ($serverRam) {
+                return $serverRam->getServer();
+            },
+            $this->serverRams->toArray()
+        );
     }
 }

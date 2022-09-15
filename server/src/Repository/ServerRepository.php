@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Server;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,7 +22,7 @@ class ServerRepository extends ServiceEntityRepository
         parent::__construct($registry, Server::class);
     }
 
-    public function add(Server $entity, bool $flush = false): void
+    public function add(Server $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +31,7 @@ class ServerRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Server $entity, bool $flush = false): void
+    public function remove(Server $entity, bool $flush = true): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -39,28 +40,25 @@ class ServerRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Server[] Returns an array of Server objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getAllServers(): array
+    {
+        $q = $this->createQueryBuilder('s')
+            ->select('s, sr, r')
+            ->leftJoin('s.serverRams', 'sr')
+            ->leftJoin('sr.ram', 'r');
+        return $q->getQuery()->getResult(Query::HYDRATE_ARRAY);
+    }
 
-//    public function findOneBySomeField($value): ?Server
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
+     */
+    public function getServerByAssetId(int $assetId): Server
+    {
+        $q = $this->createQueryBuilder('s')
+            ->select('s')
+            ->where('s.assetId = :assetId')
+            ->setParameter('assetId', $assetId);
+        return $q->getQuery()->getSingleResult();
+    }
 }

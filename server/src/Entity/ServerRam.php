@@ -14,7 +14,6 @@ class ServerRam
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'serverRams')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Server $server = null;
 
     #[ORM\ManyToOne(inversedBy: 'serverRams')]
@@ -23,6 +22,13 @@ class ServerRam
 
     #[ORM\Column]
     private ?int $quantity = null;
+
+    public function __construct(Server $server, Ram $ram, int $quantity)
+    {
+        $this->server = $server;
+        $this->ram = $ram;
+        $this->quantity = $quantity;
+    }
 
     public function getId(): ?int
     {

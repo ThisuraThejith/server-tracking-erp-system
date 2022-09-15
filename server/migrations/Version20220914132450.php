@@ -16,7 +16,7 @@ final class Version20220914132450 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // Add data to ram table
+        // Add master data to ram table
         $this->addSql("INSERT INTO ram (type, size) VALUES ('DDR3', 1)");
         $this->addSql("INSERT INTO ram (type, size) VALUES ('DDR3', 2)");
         $this->addSql("INSERT INTO ram (type, size) VALUES ('DDR3', 4)");

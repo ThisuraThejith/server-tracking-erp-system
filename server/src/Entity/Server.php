@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ServerRepository::class)]
-#[UniqueEntity(fields: "assetId", message: "Asset ID is already taken.")]
+#[UniqueEntity(fields: ['asset_id'])]
 class Server
 {
     #[ORM\Id]
@@ -32,8 +32,12 @@ class Server
     #[ORM\OneToMany(mappedBy: 'server', targetEntity: ServerRam::class)]
     private Collection $serverRams;
 
-    public function __construct()
+    public function __construct(int $assetId, string $brand, string $name, string $price)
     {
+        $this->assetId = $assetId;
+        $this->brand = $brand;
+        $this->name = $name;
+        $this->price = $price;
         $this->serverRams = new ArrayCollection();
     }
 
@@ -118,5 +122,15 @@ class Server
         }
 
         return $this;
+    }
+
+    public function getRams()
+    {
+        return array_map(
+            function ($serverRam) {
+                return $serverRam->getRam();
+            },
+            $this->serverRams->toArray()
+        );
     }
 }

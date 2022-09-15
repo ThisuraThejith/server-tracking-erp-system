@@ -21,7 +21,7 @@ class RamRepository extends ServiceEntityRepository
         parent::__construct($registry, Ram::class);
     }
 
-    public function add(Ram $entity, bool $flush = false): void
+    public function add(Ram $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class RamRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Ram $entity, bool $flush = false): void
+    public function remove(Ram $entity, bool $flush = true): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -39,28 +39,16 @@ class RamRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Ram[] Returns an array of Ram objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Ram
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
+     */
+    public function getRamById(int $ramId): Ram
+    {
+        $q = $this->createQueryBuilder('r')
+            ->select('r')
+            ->where('r.id = :ramId')
+            ->setParameter('ramId', $ramId);
+        return $q->getQuery()->getSingleResult();
+    }
 }
