@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Ram;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,13 @@ class RamRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getAllRams(): array
+    {
+        $q = $this->createQueryBuilder('r')
+            ->select('r');
+        return $q->getQuery()->getResult(Query::HYDRATE_ARRAY);
     }
 
     /**
