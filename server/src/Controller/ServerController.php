@@ -10,6 +10,8 @@ use App\Repository\ServerRamRepository;
 use App\Repository\ServerRepository;
 use App\Service\RamService;
 use App\Service\ServerService;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,7 +86,7 @@ class ServerController extends BaseController
             $assetIds = $params['assetIds'];
             foreach ($assetIds as $assetId) {
                 $server = $this->serverRepository->getServerByAssetId($assetId);
-                $serverRams = $this->serverRamRepository->getServerRamByServer($server);
+                $serverRams = $this->serverRamRepository->getServerRamsByServer($server);
                 foreach ($serverRams as $serverRam) {
                     $this->serverRamRepository->remove($serverRam);
                 }
@@ -94,6 +96,12 @@ class ServerController extends BaseController
         } catch (BadRequestHttpException $e) {
             return new JsonResponse(['message' => $e->getMessage(), 'status' => 'Failed'],
                 Response::HTTP_BAD_REQUEST);
+        } catch (NoResultException $e) {
+            return new JsonResponse(['message' => 'Server or server rams not found for the given asset Id or server', 'status' => 'Failed'],
+                Response::HTTP_NOT_FOUND);
+        } catch (NonUniqueResultException $e) {
+            return new JsonResponse(['message' => 'Duplicate servers or server ram records exist for the given asset Id or server', 'status' => 'Failed'],
+                Response::HTTP_CONFLICT);
         }
     }
 
