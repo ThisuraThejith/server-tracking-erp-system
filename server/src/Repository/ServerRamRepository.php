@@ -56,7 +56,7 @@ class ServerRamRepository extends ServiceEntityRepository
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\NoResultException
      */
-    public function getServerRamByServer(Server $server): array
+    public function getServerRamsByServer(Server $server): array
     {
         $q = $this->createQueryBuilder('sr')
             ->select('sr')
