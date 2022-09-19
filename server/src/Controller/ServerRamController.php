@@ -28,7 +28,7 @@ class ServerRamController extends BaseController
     }
 
     /**
-     * @Route("/server/{assetId}/rams", name="addRamToSever", methods={"POST"})
+     * @Route("/server/{assetId}/rams", name="addRamsToSever", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -52,7 +52,7 @@ class ServerRamController extends BaseController
     }
 
     /**
-     * @Route("/server/{assetId}/rams", name="getRamsOfServer", methods={"GET"})
+     * @Route("/server/{assetId}/rams", name="getServerRamsOfServer", methods={"GET"})
      * @param Request $request
      * @return Response
      */
