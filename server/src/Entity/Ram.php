@@ -81,7 +81,6 @@ class Ram
     public function removeServerRam(ServerRam $serverRam): self
     {
         if ($this->serverRams->removeElement($serverRam)) {
-            // set the owning side to null (unless already changed)
             if ($serverRam->getRam() === $this) {
                 $serverRam->setRam(null);
             }
@@ -90,10 +89,10 @@ class Ram
         return $this;
     }
 
-    public function getServers()
+    public function getServers(): array
     {
         return array_map(
-            function ($serverRam) {
+            static function ($serverRam) {
                 return $serverRam->getServer();
             },
             $this->serverRams->toArray()

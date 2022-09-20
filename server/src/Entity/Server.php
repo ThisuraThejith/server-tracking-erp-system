@@ -115,7 +115,6 @@ class Server
     public function removeServerRam(ServerRam $serverRam): self
     {
         if ($this->serverRams->removeElement($serverRam)) {
-            // set the owning side to null (unless already changed)
             if ($serverRam->getServer() === $this) {
                 $serverRam->setServer(null);
             }
@@ -124,10 +123,10 @@ class Server
         return $this;
     }
 
-    public function getRams()
+    public function getRams(): array
     {
         return array_map(
-            function ($serverRam) {
+            static function ($serverRam) {
                 return $serverRam->getRam();
             },
             $this->serverRams->toArray()
