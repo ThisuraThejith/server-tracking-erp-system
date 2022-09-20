@@ -3,15 +3,11 @@
 namespace App\Service;
 
 use App\Repository\RamRepository;
-use App\Repository\ServerRamRepository;
-use App\Repository\ServerRepository;
 
 class RamService
 {
     public function __construct(
-        private ServerRepository $serverRepository,
-        private RamRepository $ramRepository,
-        private ServerRamRepository $serverRamRepository
+        private RamRepository $ramRepository
     ) {
     }
 
