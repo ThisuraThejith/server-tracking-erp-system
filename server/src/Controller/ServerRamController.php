@@ -92,9 +92,9 @@ class ServerRamController extends BaseController
             $this->validateRemoveRamsFromServer($request);
             $params = json_decode($request->getContent(), true);
             $ramIds = $params['ramIds'];
+            $server = $this->serverRepository->getServerByAssetId($assetId);
             foreach ($ramIds as $ramId) {
                 $ram = $this->ramRepository->getRamById($ramId);
-                $server = $this->serverRepository->getServerByAssetId($assetId);
                 $serverRam = $this->serverRamRepository->getServerRamByRamAndServer($ram, $server);
                 $this->serverRamRepository->remove($serverRam);
             }
