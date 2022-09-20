@@ -1,0 +1,195 @@
+{
+	"info": {
+		"_postman_id": "a1248767-41c3-4d2e-bfaf-b8fd5f00a4dd",
+		"name": "Server App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2163921"
+	},
+	"item": [
+		{
+			"name": "Collection Requests",
+			"item": [
+				{
+					"name": "Get All Servers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/servers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Rams",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/rams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Server",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"assetId\": 12345678,\r\n    \"brand\": \"Acer\",\r\n    \"name\": \"Latitude 1720\",\r\n    \"price\": \"125.65\",\r\n    \"ram_modules\": \r\n    {\r\n        \"1\" : 2, \r\n        \"3\" : 2,\r\n        \"4\" : 2\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/servers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Servers",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"assetIds\": [123456789,123456799]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/servers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Resource Requests",
+			"item": [
+				{
+					"name": "Get Rams Of Server",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/server/12345678/rams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"server",
+								"12345678",
+								"rams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Rams From Server",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ramIds\": [4, 3]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/server/12345678/rams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"server",
+								"12345678",
+								"rams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Rams To Server",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ram_modules\": \r\n    {\r\n        \"5\" : 2, \r\n        \"6\" : 3\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/server/12345678/rams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"server",
+								"12345678",
+								"rams"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
