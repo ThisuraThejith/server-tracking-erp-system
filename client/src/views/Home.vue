@@ -5,7 +5,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
+
 import ServersList from '@/components/ServersList.vue'
 
 export default {
@@ -14,4 +14,5 @@ export default {
     ServersList
   }
 }
+
 </script>

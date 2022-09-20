@@ -7,11 +7,11 @@
     <div v-if="rams" class="content">
       <div v-for="ram in rams" v-bind:key="ram">
         <div class="card">
-          <h5 class="card-header">{{ram.ram.type}}</h5>
+          <h5 class="card-header"><b>Type: </b>{{ram.ram.type}}</h5>
           <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <button type="button" @click="navigateToServer(ram.id)" class="btn btn-primary">Server Information</button>
+            <p class="card-text"><b>Size: </b>{{ram.ram.size}} GB</p>
+            <p class="card-text"><b>Quantity: </b>{{ram.quantity}}</p>
+            <button type="button" @click="deleteRam(ram.ram.id)" class="btn btn-outline-danger" :disabled="rams.length<=1">Delete Ram</button>
           </div>
         </div>
       </div>
@@ -20,8 +20,8 @@
 </template>
 
 <script>
+
 import axios from 'axios'
-import router from '../router'
 
 export default {
   name: 'RamsList',
@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     fetchData() {
-      console.log(this.$route.params)
       this.error = this.rams = null
       this.loading = true
 
@@ -48,23 +47,29 @@ export default {
           .then((response) => {
             this.loading = false
             this.rams = response.data
-            console.log(response);
           })
           .catch((error) => {
             this.loading = false
             this.error = error.toString()
-            console.log(error);
           })
     },
-    navigateToServer(assetId) {
-      router.push({ name: 'Server', params: { assetId } })
-      console.log(assetId);
+    deleteRam(ramId) {
+      let result = confirm("Are you sure you want to remove this RAM module?");
+      if (result) {
+        axios.delete('http://localhost:8080/server/'+this.$route.query.assetId+'/rams', {data: {ramIds: [ramId]}})
+            .then(() => {
+              this.fetchData()
+            })
+            .catch((error) => {
+              this.error = error.toString()
+            })
+      }
     },
   },
 }
+
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
