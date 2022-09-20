@@ -17,6 +17,57 @@ class RamController extends BaseController
     }
 
     /**
+     * @api {get} /rams  1. Rams - Get
+     * @apiDescription Retrieves details of all the rams
+     * @apiName  getAllRams
+     * @apiGroup Rams - Collection Requests
+     * @apiSuccess {JSON} Object - Object containing all the rams
+     * @apiSuccessExample Success-Response:
+     *  [
+            {
+                "id": 1,
+                "type": "DDR3",
+                "size": 1
+            },
+            {
+                "id": 2,
+                "type": "DDR3",
+                "size": 2
+            },
+            {
+                "id": 3,
+                "type": "DDR3",
+                "size": 4
+            },
+            {
+                "id": 4,
+                "type": "DDR3",
+                "size": 8
+            },
+            {
+                "id": 5,
+                "type": "DDR4",
+                "size": 1
+            },
+            {
+                "id": 6,
+                "type": "DDR4",
+                "size": 2
+            },
+            {
+                "id": 7,
+                "type": "DDR4",
+                "size": 4
+            },
+            {
+                "id": 8,
+                "type": "DDR4",
+                "size": 8
+            }
+        ]
+     * @apiError (400) BadRequest Unsupported request
+     */
+    /**
      * @Route("/rams", name="getAllRams", methods={"GET"})
      * @param Request $request
      * @return Response

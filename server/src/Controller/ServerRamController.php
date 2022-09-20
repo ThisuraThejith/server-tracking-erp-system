@@ -27,6 +27,37 @@ class ServerRamController extends BaseController
     }
 
     /**
+     *
+     * @api {post} /server/{assetId}/rams 1. Server Rams - Add
+     * @apiDescription Adds ram modules to the server with the provided asset ID
+     * @apiName addRamsToSever
+     * @apiGroup Servers - Resource Requests
+     * @apiParam {Integer} assetId - Asset ID of the server to which the ram modules are being added <br>
+     * i.e. <b>{{apiUrl}}/server/123456789/rams<b>
+     * @apiParam {JSON} Object - Parameters which are needed to add rams to the server <br>
+     * <b>In the following parameter object example the object key should be the ID of the particular ram module. The
+     * value should be the quantity of the particular ram module that needs to be added to the server.<b>
+     * @apiParamExample {JSON} Parameter-Object-Example:
+     *  {
+     *       "ram_modules":
+     *       {
+     *           "3" : 2,
+     *           "4" : 3
+     *       }
+     *  }
+     * @apiSuccess {JSON} Object - Object containing success message and status
+     *
+     * @apiSuccessExample Success-Response:
+     * {
+     *       "message": "Successfully Saved",
+     *       "status": "Success"
+     * }
+     *
+     * @apiError (400) BadRequest Invalid parameters provided
+     * @apiError (404) NotFound Server not found
+     * @apiError (409) Conflict Duplicate servers exist
+     */
+    /**
      * @Route("/server/{assetId}/rams", name="addRamsToSever", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
@@ -58,6 +89,37 @@ class ServerRamController extends BaseController
     }
 
     /**
+     * @api {get} /server/{assetId}/rams  2. Server Rams - Get
+     * @apiDescription Retrieves details of all the ram modules of a server
+     * @apiName  getServerRamsOfServer
+     * @apiGroup Servers - Resource Requests
+     * @apiSuccess {JSON} Object - Object containing all the rams of the given server
+     * @apiSuccessExample Success-Response:
+     *  [
+     *       {
+     *           "id": 1,
+     *           "quantity": 2,
+     *           "ram": {
+     *               "id": 1,
+     *               "type": "DDR3",
+     *               "size": 1
+     *           }
+     *       },
+     *       {
+     *           "id": 2,
+     *           "quantity": 2,
+     *           "ram": {
+     *               "id": 3,
+     *               "type": "DDR3",
+     *               "size": 4
+     *           }
+     *       }
+     *   ]
+     * @apiError (400) BadRequest Unsupported request
+     * @apiError (404) NotFound Server not found
+     * @apiError (409) Conflict Duplicate servers exist
+     */
+    /**
      * @Route("/server/{assetId}/rams", name="getServerRamsOfServer", methods={"GET"})
      * @param Request $request
      * @return Response
@@ -82,6 +144,29 @@ class ServerRamController extends BaseController
     }
 
     /**
+     *
+     * @api {delete} /server/{assetId}/rams 3. Server Rams - Delete
+     * @apiDescription Removes ram modules of the given server when a list of ram ID is provided
+     * @apiName removeRamsFromServer
+     * @apiGroup Servers - Resource Requests
+     * @apiParam {JSON} Object - List of ram IDs of the rams that's being removed from the given server
+     * @apiParamExample {JSON} Parameter-Object-Example:
+     *  {
+     *      "ramIds": [4, 3]
+     *  }
+     * @apiSuccess {JSON} Object - Object containing success message and status
+     *
+     * @apiSuccessExample Success-Response:
+     *  {
+     *       "message": "Successfully Deleted",
+     *       "status": "Success"
+     *  }
+     *
+     * @apiError (400) BadRequest Invalid parameters provided
+     * @apiError (404) NotFound Server or ram not found
+     * @apiError (409) Conflict Duplicate servers or ram records exist
+     */
+    /**
      * @Route("/server/{assetId}/rams", name="removeRamsFromServer", methods={"DELETE"})
      * @param Request $request
      * @return Response
@@ -98,12 +183,12 @@ class ServerRamController extends BaseController
                 $serverRam = $this->serverRamRepository->getServerRamByRamAndServer($ram, $server);
                 $this->serverRamRepository->remove($serverRam);
             }
-            return new JsonResponse(['message' => 'Successfully Deleted', 'status' => 'success']);
+            return new JsonResponse(['message' => 'Successfully Deleted', 'status' => 'Success']);
         } catch (BadRequestHttpException $e) {
             return new JsonResponse(['message' => $e->getMessage(), 'status' => 'Failed'],
                 Response::HTTP_BAD_REQUEST);
         } catch (NoResultException $e) {
-            return new JsonResponse(json_encode(['message' => 'Server or with the given asset or ram Id is not found', 'status' => 'Failed']),
+            return new JsonResponse(json_encode(['message' => 'Server or ram with the given asset or ram Id is not found', 'status' => 'Failed']),
                 Response::HTTP_NOT_FOUND);
         } catch (NonUniqueResultException $e) {
             return new JsonResponse(json_encode(['message' => 'Duplicate servers or rams exist for the given asset or ram Id', 'status' => 'Failed']),

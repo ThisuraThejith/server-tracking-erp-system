@@ -31,6 +31,35 @@ class ServerController extends BaseController
     }
 
     /**
+     *
+     * @api {post} /servers 1. Servers - Create
+     * @apiDescription Creates a server
+     * @apiName createServer
+     * @apiGroup Servers - Collection Requests
+     * @apiParam {JSON} Object - Properties of the server that's being created
+     * @apiParamExample {JSON} Parameter-Object-Example:
+     *  {
+     *       "assetId": 123456789,
+     *       "brand": "Acer",
+     *       "name": "Latitude 1720",
+     *       "price": "125.65",
+     *       "ram_modules":
+     *       {
+     *          "1" : 2,
+     *          "3" : 2
+     *       }
+     *  }
+     * @apiSuccess {JSON} Object - Object containing success message and status
+     *
+     * @apiSuccessExample Success-Response:
+     * {
+     *       "message": "Successfully Saved",
+     *       "status": "Success"
+     * }
+     *
+     * @apiError (400) BadRequest Invalid parameters provided
+     */
+    /**
      * @Route("/servers", name="createServer", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
@@ -57,6 +86,53 @@ class ServerController extends BaseController
     }
 
     /**
+     * @api {get} /servers  2. Servers - Get
+     * @apiDescription Retrieves details of all the servers
+     * @apiName  getAllServers
+     * @apiGroup Servers - Collection Requests
+     * @apiSuccess {JSON} Object - Object containing all the servers
+     * @apiSuccessExample Success-Response:
+     *  [
+            {
+                "id": 1,
+                "assetId": 123456788,
+                "brand": "Acer",
+                "name": "Latitude 1720",
+                "price": 850.55,
+                "serverRams": [
+                    {
+                        "id": 1,
+                        "quantity": 2,
+                        "ram": {
+                            "id": 1,
+                            "type": "DDR3",
+                            "size": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "assetId": 123456789,
+                "brand": "DELL",
+                "name": "R210",
+                "price": 650.85,
+                "serverRams": [
+                    {
+                        "id": 2,
+                        "quantity": 2,
+                        "ram": {
+                            "id": 1,
+                            "type": "DDR3",
+                            "size": 1
+                        }
+                    }
+                ]
+            }
+    ]
+     * @apiError (400) BadRequest Unsupported request
+     */
+    /**
      * @Route("/servers", name="getAllServers", methods={"GET"})
      * @param Request $request
      * @return Response
@@ -73,6 +149,29 @@ class ServerController extends BaseController
         }
     }
 
+    /**
+     *
+     * @api {delete} /servers 3. Servers - Delete
+     * @apiDescription Deletes servers when a list of asset ID is provided
+     * @apiName deleteServers
+     * @apiGroup Servers - Collection Requests
+     * @apiParam {JSON} Object - List of asset IDs of the servers that's being deleted
+     * @apiParamExample {JSON} Parameter-Object-Example:
+     *  {
+     *       "assetIds": [123456788,123456789]
+     *  }
+     * @apiSuccess {JSON} Object - Object containing success message and status
+     *
+     * @apiSuccessExample Success-Response:
+     *  {
+     *       "message": "Successfully Deleted",
+     *       "status": "Success"
+     *  }
+     *
+     * @apiError (400) BadRequest Invalid parameters provided
+     * @apiError (404) NotFound Server or server-rams not found
+     * @apiError (409) Conflict Duplicate servers or server-ram records exist
+     */
     /**
      * @Route("/servers", name="deleteServers", methods={"DELETE"})
      * @param Request $request
@@ -92,7 +191,7 @@ class ServerController extends BaseController
                 }
                 $this->serverRepository->remove($server);
             }
-            return new JsonResponse(['message' => 'Successfully Deleted', 'status' => 'success']);
+            return new JsonResponse(['message' => 'Successfully Deleted', 'status' => 'Success']);
         } catch (BadRequestHttpException $e) {
             return new JsonResponse(['message' => $e->getMessage(), 'status' => 'Failed'],
                 Response::HTTP_BAD_REQUEST);

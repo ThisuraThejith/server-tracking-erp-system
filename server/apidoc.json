@@ -1,0 +1,12 @@
+{
+  "name": "Server Management System",
+  "version": "0.1.0",
+  "description": "API Documentation of Server Management System",
+  "title": "Server Management System API Details",
+  "url" : "{{apiUrl}}",
+  "order": [
+    "Servers - Collection Requests",
+    "Servers - Resource Requests",
+    "Rams - Collection Requests"
+  ]
+}
